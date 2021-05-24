@@ -1,0 +1,8 @@
+<h3>
+  {{'user.list' |titlecase}}
+</h3>
+<hr>
+<div class="row">
+  <app-user-thumbail class="col-md-6" [user]="user" *ngFor="let user of userList">
+  </app-user-thumbail>
+</div>

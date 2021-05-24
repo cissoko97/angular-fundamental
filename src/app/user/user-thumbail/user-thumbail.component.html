@@ -1,0 +1,4 @@
+<div [routerLink]="['/user' , user.id]">
+  <span>{{user?.name |titlecase}}</span>
+  <pre>{{user?.company |json}}</pre>
+</div>
