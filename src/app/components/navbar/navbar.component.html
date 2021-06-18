@@ -12,16 +12,32 @@
             [routerLinkActiveOptions]="{exact:true}">List All</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/user/new']" [routerLinkActive]="['active']">Add User</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['profile/new']" [routerLinkActive]="['active']">new profile</a>
+          <a class="nav-link" [routerLink]="['/user/new']" [routerLinkActive]="['active']">New Developer</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form class="d-flex" (ngSubmit)="makeSearch(searchTerm)">
+        <input class="form-control me-2" [(ngModel)]="searchTerm" type="search" placeholder="Search" aria-label="Search"
+          name="searchTerm">
+        <button class="btn btn-outline-success" appTriggerModal="resultSearch" type="submit">Search</button>
       </form>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" *ngIf="!auth.isAuthenticated()" [routerLink]="['/profile/login']"
+            [routerLinkActive]="['active']">login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" *ngIf="auth.isAuthenticated()" [routerLink]="['profile/new']"
+            [routerLinkActive]="['active']">welcome {{auth.currentUser.username}}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
+
+<simple-modal [closeOnBodyClick]="true" [elementId]="'resultSearch'" [title]="'macthing user website'">
+  <div class="list-group">
+    <a [routerLink]="['/user' , user.id]" class="list-group-item" *ngFor="let user of foundUser">
+      {{user?.name}}
+    </a>
+  </div>
+</simple-modal>

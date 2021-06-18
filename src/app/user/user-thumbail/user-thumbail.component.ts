@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Level } from '../enum/level.enum';
+import { IUser } from '../models';
 
 @Component({
   selector: 'app-user-thumbail',
@@ -6,8 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./user-thumbail.component.scss']
 })
 export class UserThumbailComponent implements OnInit {
-
-  @Input() user: any;
+  readonly LEVEL = Level;
+  @Input() user!: IUser;
   constructor() { }
 
   ngOnInit(): void {

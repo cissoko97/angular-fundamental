@@ -1,13 +1,18 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
+import { IUser } from '../../models';
 
 @Injectable()
 export class UserService {
 
   constructor() { }
 
-  getUSer(): any {
-    let subject = new Subject();
+  /**
+   * get All user from initial array
+   * @returns Subject<IUser[]>
+   */
+  getUSer(): Subject<IUser[]> {
+    let subject = new Subject<IUser[]>();
     setTimeout(() => {
       subject.next(USERLIST);
       subject.complete();
@@ -16,17 +21,56 @@ export class UserService {
     // return of(USERLIST);
   }
 
-  getUserById(id: number): Observable<any> {
-    return of(USERLIST.find(user => user.id === id))
+  /**
+   * getUserById
+   * @param id
+   * @returns
+   */
+  getUserById(id: number): Observable<IUser> {
+    return of(USERLIST.find(user => user.id === id)) as Observable<IUser>;
+  }
+
+  /**
+   *
+   * @param searchTerm
+   * @returns
+   */
+  searchUserByTerm(searchTerm: string) {
+    let RESULTS: IUser[] = [];
+    const matchToFilter = USERLIST.filter(user => user.email.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
+
+    RESULTS = RESULTS.concat(matchToFilter);
+
+    const emitter = new EventEmitter<IUser[]>(true);
+    setTimeout(() => {
+      emitter.emit(RESULTS)
+    }, 100);
+    return emitter;
+  }
+
+  /**
+   *
+   */
+  public addDeveloper(developer: IUser): EventEmitter<number> {
+    const lastId = USERLIST.length;
+    developer.id = lastId + 1;
+    const emitter = new EventEmitter<number>(true);
+    setTimeout(() => {
+      USERLIST.push(developer)
+      emitter.emit(developer.id);
+    }, 100);
+    return emitter
   }
 }
 
 const USERLIST = [
   {
     id: 1,
+    experience: 'junior',
     name: "Leanne Graham",
     username: "Bret",
     email: "Sincere@april.biz",
+    reputation: 4,
     address: {
       street: "Kulas Light",
       suite: "Apt. 556",
@@ -47,9 +91,11 @@ const USERLIST = [
   },
   {
     id: 2,
+    experience: 'junior',
     name: "Ervin Howell",
     username: "Antonette",
     email: "Shanna@melissa.tv",
+    reputation: 11,
     address: {
       street: "Victor Plains",
       suite: "Suite 879",
@@ -70,9 +116,11 @@ const USERLIST = [
   },
   {
     id: 3,
+    experience: 'junior',
     name: "Clementine Bauch",
     username: "Samantha",
     email: "Nathan@yesenia.net",
+    reputation: 3,
     address: {
       street: "Douglas Extension",
       suite: "Suite 847",
@@ -93,9 +141,11 @@ const USERLIST = [
   },
   {
     id: 4,
+    experience: 'middle',
     name: "Patricia Lebsack",
     username: "Karianne",
     email: "Julianne.OConner@kory.org",
+    reputation: 40,
     address: {
       street: "Hoeger Mall",
       suite: "Apt. 692",
@@ -116,9 +166,11 @@ const USERLIST = [
   },
   {
     id: 5,
+    experience: 'middle',
     name: "Chelsey Dietrich",
     username: "Kamren",
     email: "Lucio_Hettinger@annie.ca",
+    reputation: 8,
     address: {
       street: "Skiles Walks",
       suite: "Suite 351",
@@ -139,9 +191,11 @@ const USERLIST = [
   },
   {
     id: 6,
+    experience: 'middle',
     name: "Mrs. Dennis Schulist",
     username: "Leopoldo_Corkery",
     email: "Karley_Dach@jasper.info",
+    reputation: 6,
     address: {
       street: "Norberto Crossing",
       suite: "Apt. 950",
@@ -162,9 +216,11 @@ const USERLIST = [
   },
   {
     id: 7,
+    experience: 'senior',
     name: "Kurtis Weissnat",
     username: "Elwyn.Skiles",
     email: "Telly.Hoeger@billy.biz",
+    reputation: 7,
     address: {
       street: "Rex Trail",
       suite: "Suite 280",
@@ -185,9 +241,11 @@ const USERLIST = [
   },
   {
     id: 8,
+    experience: 'senior',
     name: "Nicholas Runolfsdottir V",
     username: "Maxime_Nienow",
     email: "Sherwood@rosamond.me",
+    reputation: 30,
     address: {
       street: "Ellsworth Summit",
       suite: "Suite 729",
@@ -208,9 +266,11 @@ const USERLIST = [
   },
   {
     id: 9,
+    experience: 'senior',
     name: "Glenna Reichert",
     username: "Delphine",
     email: "Chaim_McDermott@dana.io",
+    reputation: 2,
     address: {
       street: "Dayna Park",
       suite: "Suite 449",
@@ -231,9 +291,11 @@ const USERLIST = [
   },
   {
     id: 10,
+    experience: 'senior',
     name: "Clementina DuBuque",
     username: "Moriah.Stanton",
     email: "Rey.Padberg@karina.biz",
+    reputation: 15,
     address: {
       street: "Kattie Turnpike",
       suite: "Suite 198",

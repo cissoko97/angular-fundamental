@@ -3,8 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCreateComponent, UserService, RouteActivedGuard, UserListResolver, Component404Component, NavbarComponent } from './user';
+import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCreateComponent, UserService, RouteActivedGuard, UserListResolver, UserDetailResolver, VotesService } from './user';
+import { AuthService } from './profile/service/authService';
+import { SharedModule } from './shared/shared.module';
+import { Component404Component, NavbarComponent, JQUERY_TOKEN } from './components';
 
+// declare var $: any;
+
+let jQuery = window['$' as any]
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,12 +23,19 @@ import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCrea
   ],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [UserService, RouteActivedGuard,
+  providers: [
+    UserService,
+    VotesService,
+    RouteActivedGuard,
     { provide: 'canDeactivateCreateUser', useValue: checkDirtyState },
-    UserListResolver
+    { provide: JQUERY_TOKEN, useValue: jQuery },
+    AuthService,
+    UserListResolver,
+    UserDetailResolver
   ],
   bootstrap: [AppComponent]
 })

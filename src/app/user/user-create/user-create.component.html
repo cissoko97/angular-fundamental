@@ -1,11 +1,72 @@
-<h3>
-  {{'user.new' |titlecase}}
-  {{'[create user]' |titlecase}}
+<h3 class="mt-3">
+  {{'Developer.new' |titlecase}}
 </h3>
 <hr>
-<div class="col-md-6">
-  <div class="footer-btn">
-    <button type="submit" class="btn btn-outline-success">save</button>
-    <button type="button" (click)="cancel()" class="btn btn-outline-danger">cancel</button>
-  </div>
+<div class="col-md-6 col-sm-12">
+  <form [formGroup]="formDeveloper" (ngSubmit)="createUser(formDeveloper.value)">
+
+    <fieldset>
+      <legend>Personnal information</legend>
+      <div class="form-floating mb-3">
+        <input id="userName"
+          [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.controls.name?.invalid && (formDeveloper.controls.name?.touched) }"
+          formControlName="name" type="text" placeholder="Name" />
+        <label class="form-label" for="userName">Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="surname"
+          [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.controls.username?.invalid && (formDeveloper.controls.username?.touched) }"
+          formControlName="username" type="text" placeholder="surname" />
+        <label class="form-label" for="userName">Surname</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input id="email"
+          [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.controls.email?.invalid && (formDeveloper.controls.email?.touched) }"
+          formControlName="email" type="email" placeholder="email" />
+        <label class="form-label" for="userName">Email</label>
+      </div>
+      <div class="form-floating mb-3">
+        <select formControlName="experience"
+          [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.controls.experience?.invalid && (formDeveloper.controls.experience?.touched) }"
+          id="experience">
+          <option [value]="item" *ngFor="let item of LEVEL |readEnum">{{item}}</option>
+        </select>
+        <label class="form-label" for="experience">Experience</label>
+      </div>
+      <div class="mb-3">
+        <label for="reputation" class="form-label">Reputation : {{formDeveloper.get('reputation')?.value}} </label>
+        <input type="range" (change)="formDeveloper.get('company.name')?.updateValueAndValidity()"
+          formControlName="reputation" [ngClass]="{'form-range': true}" min="0" max="20" step="1" id="reputation">
+      </div>
+    </fieldset>
+    <!--#companyGroup="formGroupName"  -->
+    <fieldset [formGroupName]="'company'" [appValidator]="['lol','oklm']">
+      <legend>Company</legend>
+      <div class="row">
+        <div class="form-floating mb-3 col-md-6 col-sm-12">
+          <input id="company_name"
+            [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.get('company.name')?.invalid && (formDeveloper.get('company.name')?.touched)} "
+            formControlName="name" type="text" placeholder="Name" />
+          <label class="form-label" for="company_name">Name</label>
+        </div>
+        <div class="form-floating mb-3 col-md-6 col-sm-12">
+          <input id="pharse"
+            [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.get('company.pharse')?.invalid && (formDeveloper.get('company.pharse')?.touched) }"
+            formControlName="pharse" type="text" placeholder="pharse" />
+          <label class="form-label" for="pharse">pharse</label>
+        </div>
+        <div class="form-floating mb-3 col-md-12 col-sm-12">
+          <input id="bs"
+            [ngClass]="{'form-control':true ,'is-invalid':formDeveloper.get('company.bs')?.invalid && (formDeveloper.get('company.bs')?.dirty) }"
+            formControlName="bs" type="text" placeholder="bs" />
+          <label class="form-label" for="bs">bs</label>
+        </div>
+      </div>
+      <!-- <pre>{{formDeveloper.get('company')?.errors| json}}</pre> -->
+    </fieldset>
+    <div class="footer-btn mb-3 ">
+      <button type="submit" [disabled]="formDeveloper.invalid" class="btn btn-outline-success">save</button>
+      <button type="button" (click)="cancel()" class="btn btn-outline-danger">cancel</button>
+    </div>
+  </form>
 </div>

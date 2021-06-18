@@ -1,3 +1,24 @@
-:host{
+:host {
   cursor: pointer;
+  height: fit-content !important;
+
+  .user_card {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+
+    .user_info {
+      display: flex;
+      flex-direction: row;
+    }
+    .user_avatar {
+      height: 100px;
+      width: 100px;
+      border-radius: 60%;
+    }
+    .user_name {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }

@@ -5,3 +5,30 @@
   flex-direction: row;
   justify-content: space-evenly;
 }
+
+.invalid-feedback {
+  display: flex !important;
+}
+
+html,
+body {
+  font-family: "Fira Code" !important;
+}
+
+.bi {
+  font-size: 2rem;
+  &.middle {
+    color: rgba(243, 44, 44, 0.897) !important;
+  }
+
+  &.junior {
+    color: rgb(100, 149, 237) !important;
+  }
+  &.senior {
+    color: rgba(30, 221, 141, 0.822) !important;
+  }
+}
+
+.form-floating > label {
+  left: inherit !important;
+}

@@ -1,8 +1,27 @@
-<h3>
-  {{'user.list' |titlecase}}
-</h3>
+<div class="row mt-3">
+  <h3 class="col-md-3">
+    {{'Developers list' |titlecase}}
+  </h3>
+  <div class="col-md-8">
+    <div class="row">
+      <button class="col-md-6 btn btn btn-group">
+        <button [ngClass]="{'btn btn-sm btn-secondary':true , 'active' : sortBy ==='name'}"
+          (click)="setSortBy('name')">name</button>
+        <button [ngClass]="{'btn btn-sm btn-secondary':true , 'active' : sortBy ==='reputation'}"
+          (click)="setSortBy('reputation')">reputation</button>
+      </button>
+
+      <button class="col-md-6 btn btn btn-group">
+        <button (click)="setfilterBy('all')" [ngClass]="{'btn btn-sm btn-secondary':true, 'active' : filterBy ==='all'}"
+          class="">all</button>
+        <button [ngClass]="{'btn btn-sm btn-secondary':true , 'active' : filterBy === item}" (click)="setfilterBy(item)"
+          *ngFor="let item of LEVEL | readEnum " class="btn btn-sm btn-secondary">{{item}}</button>
+      </button>
+    </div>
+  </div>
+</div>
 <hr>
 <div class="row">
-  <app-user-thumbail class="col-md-6" [user]="user" *ngFor="let user of userList">
+  <app-user-thumbail class="col-md-6" [user]="user" *ngFor="let user of userToDisplay">
   </app-user-thumbail>
 </div>

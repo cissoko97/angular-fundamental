@@ -1,11 +1,38 @@
-<h3>
+<h3 class="mt-3">
   {{'profile.new' |titlecase}}
   {{'[create profile]' |titlecase}}
 </h3>
 <hr>
+
 <div class="col-md-6">
-  <div class="footer-btn">
-    <button type="submit" class="btn btn-outline-success">save</button>
-    <button type="button" class="btn btn-outline-danger">cancel</button>
-  </div>
+  <form [formGroup]="profileForm" autocomplete="off" novalidate (ngSubmit)="updateProfil(profileForm.value)">
+    <div class="form-floating mb-3">
+      <input id="firstname" [ngClass]="{'form-control':true ,'is-invalid':!validateFirstName()||loginMouseOver}"
+        formControlName="firstname" type="text" placeholder="User Name..." />
+      <label class="form-label" for="userName">User name</label>
+      <span *ngIf="profileForm.controls.username?.invalid && (profileForm.controls?.username?.touched )"
+        class="invalid-feedback">
+        Please choose a username.
+      </span>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input id="lastname" [ngClass]="{'form-control':true ,'is-invalid': !validateLastName()||loginMouseOver}"
+        formControlName="lastname" type="text" placeholder="lastname..." />
+      <label class="form-label" for="password">Password</label>
+      <span *ngIf="profileForm.controls?.password?.invalid && (profileForm.controls?.password?.touched )"
+        class="invalid-feedback">
+        Please choose a username.
+      </span>
+    </div>
+
+    <div class="footer-btn">
+      <span (mouseenter)="mouseEvent($event , true)" (mouseleave)="mouseEvent($event ,false)">
+        <button type="submit" [disabled]="profileForm.invalid" class="btn btn-outline-success">Login</button>
+      </span>
+      <button type="reset" (click)="cancel()" class="btn btn-outline-danger">Cancel</button>
+    </div>
+  </form>
 </div>
+
+<pre>{{profileForm.value| json}}</pre>

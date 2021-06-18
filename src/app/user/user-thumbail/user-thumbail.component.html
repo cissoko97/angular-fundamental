@@ -1,4 +1,20 @@
-<div [routerLink]="['/user' , user.id]">
-  <span>{{user?.name |titlecase}}</span>
-  <pre>{{user?.company |json}}</pre>
+<div [routerLink]="['/user' , user?.id]" class="user_card">
+  <div class="user_info">
+    <img class="user_avatar" src="/assets/images/user.png" alt="user image">
+    <div class="user_name">
+      <div>
+        {{user?.id?.toString()| titlecase}} <br>
+        {{user?.name | titlecase}} <br>
+        {{user?.reputation }} <br>
+        {{user?.username | titlecase}} <br>
+        {{user?.phone | titlecase}} <br>
+
+        <i [ngClass]="{'bi bi-exclamation-diamond': true ,
+        'junior':user.experience === LEVEL.junior ,
+        'senior':user.experience === LEVEL.senior ,
+        'middle':user.experience === LEVEL.middle}"></i>
+      </div>
+    </div>
+    <!-- <pre>{{user?.company |json}}</pre> -->
+  </div>
 </div>

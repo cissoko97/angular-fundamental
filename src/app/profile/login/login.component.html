@@ -1,0 +1,71 @@
+<h3 class="mt-3">Login</h3>
+<hr>
+<div class="row">
+
+  <div class="col-md-6">
+    <form #loginForm="ngForm" autocomplete="off" novalidate (ngSubmit)="submitForm(loginForm.value)">
+      <div class="form-floating mb-3">
+        <input id="userName"
+          [ngClass]="{'form-control':true ,'is-invalid':loginForm.controls.username?.invalid && (loginForm.controls.username?.touched || mouseOverLogin) }"
+          (ngModel)="username" required name="username" type="text" placeholder="User Name..." />
+        <label class="form-label" for="userName">User name
+        </label>
+      </div>
+      <div class="mb-3">
+        <em *ngIf="loginForm.controls.username?.invalid && (loginForm.controls.username?.touched || mouseOverLogin)"
+          class="invalid-feedback">
+          Please choose a username.
+        </em>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input id="password"
+          [ngClass]="{'form-control':true ,'is-invalid':loginForm.controls.password?.invalid && (loginForm.controls.password?.touched || mouseOverLogin)}"
+          (ngModel)="password" required name="password" type="password" placeholder="Password..." />
+        <label class="form-label" for="password">Password</label>
+      </div>
+      <em *ngIf="loginForm.controls.password?.invalid && (loginForm.controls.password?.touched || mouseOverLogin)"
+        class="invalid-feedback">
+        Please choose a username.
+      </em>
+
+      <div class="footer-btn">
+        <span (mouseenter)="mouseEvent($event , true)" (mouseleave)="mouseEvent($event ,false)">
+          <button type="submit" [disabled]="loginForm.invalid" class="btn btn-outline-success">Login</button>
+        </span>
+        <button type="reset" (click)="cancel()" class="btn btn-outline-danger">Cancel</button>
+      </div>
+    </form>
+
+  </div>
+
+
+  <ng-container></ng-container>
+  <!-- <div class="col-md-5">
+    <pre>
+      loginForm.controls.username.valid : {{loginForm.controls?.username?.valid }}
+      loginForm.controls.username.invalid : {{loginForm.controls?.username?.invalid }}
+      loginForm.controls.username.dirty : {{loginForm.controls?.username?.dirty }}
+      loginForm.controls.username.pristine : {{loginForm.controls?.username?.pristine }}
+      loginForm.controls.username.touched : {{loginForm.controls?.username?.touched }}
+      loginForm.controls.username.untouched : {{loginForm.controls?.username?.untouched }}
+    </pre>
+    <pre>
+      loginForm.controls.password.valid : {{loginForm.controls?.password?.valid }}
+      loginForm.controls.password.invalid : {{loginForm.controls?.password?.invalid }}
+      loginForm.controls.password.dirty : {{loginForm.controls?.password?.dirty }}
+      loginForm.controls.password.pristine : {{loginForm.controls?.password?.pristine }}
+      loginForm.controls.password.touched : {{loginForm.controls?.password?.touched }}
+      loginForm.controls.password.untouched : {{loginForm.controls?.password?.untouched }}
+    </pre>
+    <pre>
+      loginForm.valid : {{loginForm.valid }}
+      loginForm.invalid : {{loginForm.invalid }}
+      loginForm.dirty : {{loginForm.dirty }}
+      loginForm.pristine : {{loginForm.pristine }}
+      loginForm.submitted : {{loginForm.submitted }}
+      loginForm.touched : {{loginForm.touched }}
+      loginForm.untouched : {{loginForm.untouched }}
+    </pre>
+  </div> -->
+</div>
