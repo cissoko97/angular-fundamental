@@ -12,7 +12,6 @@ export class UserDetailResolver implements Resolve<boolean> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    const id: number = +route.params['id'];
-    return this._userService.getUserById(id).pipe(map(res => res));
+    return this._userService.getUserById(+route.params['id']).pipe(map(res => res));
   }
 }

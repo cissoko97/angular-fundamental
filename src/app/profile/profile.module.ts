@@ -4,8 +4,9 @@ import { ProfileRoutingModule, ProfileCreateComponent, LoginComponent } from './
 import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
-    ProfileCreateComponent
-    , LoginComponent],
+    ProfileCreateComponent,
+    LoginComponent
+  ],
   imports: [
     CommonModule,
     ProfileRoutingModule,

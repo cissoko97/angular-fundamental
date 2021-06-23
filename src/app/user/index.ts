@@ -9,3 +9,4 @@ export * from './user-thumbail/user-thumbail.component';
 export * from './user.list/user.list.component';
 export * from './enum/level.enum';
 export * from './custom-validator/validator'
+export * from './models'

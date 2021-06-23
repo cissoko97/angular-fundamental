@@ -1,24 +1,28 @@
-import { EventEmitter, Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { IUser } from '../../models';
 
 @Injectable()
 export class UserService {
+  private httpOptions!: {};
+  readonly DEVELOPER_URL = 'api/developers';
 
-  constructor() { }
+  constructor(private _http: HttpClient) {
+    this.httpOptions = { headers: new HttpHeaders({ 'Content-type': 'application/json' }) }
+  }
 
   /**
    * get All user from initial array
    * @returns Subject<IUser[]>
    */
-  getUSer(): Subject<IUser[]> {
-    let subject = new Subject<IUser[]>();
-    setTimeout(() => {
-      subject.next(USERLIST);
-      subject.complete();
-    }, 500);
-    return subject;
-    // return of(USERLIST);
+  getUSer(): Observable<IUser[]> {
+    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}`, this.httpOptions)
+      .pipe(
+        retry(2),
+        tap((data: Array<IUser>) => this.log(`fetch data dev with size ${data.length}`)),
+        catchError(this.handleError<IUser[]>('getDeveloper', [])));
   }
 
   /**
@@ -27,7 +31,11 @@ export class UserService {
    * @returns
    */
   getUserById(id: number): Observable<IUser> {
-    return of(USERLIST.find(user => user.id === id)) as Observable<IUser>;
+    return this._http.get<IUser>(`${this.DEVELOPER_URL}/${id}`, this.httpOptions)
+      .pipe(
+        tap((data: IUser) => this.log(`fetch data dev with Id = ${data?.id}`)),
+        catchError(this.handleError<IUser>('getUSer'))
+      );
   }
 
   /**
@@ -36,282 +44,56 @@ export class UserService {
    * @returns
    */
   searchUserByTerm(searchTerm: string) {
-    let RESULTS: IUser[] = [];
-    const matchToFilter = USERLIST.filter(user => user.email.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
 
-    RESULTS = RESULTS.concat(matchToFilter);
-
-    const emitter = new EventEmitter<IUser[]>(true);
-    setTimeout(() => {
-      emitter.emit(RESULTS)
-    }, 100);
-    return emitter;
+    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}?email=^s`, this.httpOptions).pipe(
+      tap(_ => this.log(`fetch developer when email content ${searchTerm}`)),
+      catchError(this.handleError<IUser[]>('fetch developer with wither', [])
+      )
+    )
   }
 
   /**
    *
    */
-  public addDeveloper(developer: IUser): EventEmitter<number> {
-    const lastId = USERLIST.length;
-    developer.id = lastId + 1;
-    const emitter = new EventEmitter<number>(true);
-    setTimeout(() => {
-      USERLIST.push(developer)
-      emitter.emit(developer.id);
-    }, 100);
-    return emitter
+  public addDeveloper(developer: IUser): Observable<IUser> {
+
+    return this._http.post<IUser>(`${this.DEVELOPER_URL}`, developer, this.httpOptions)
+      .pipe(
+        retry(2),
+        tap((newDev: IUser) => this.log(`added developer w/ id=${newDev.id}`)),
+        catchError(this.handleError<IUser>('added developer')));
+  }
+
+  /**
+   * updateDeveloper
+   */
+  public updateDeveloper(developer: IUser) {
+    return this._http.put<IUser>(`${this.DEVELOPER_URL}`, developer, this.httpOptions)
+      .pipe(
+        retry(2),
+        tap((_) => this.log(`added developer w/ id=${developer.id}`)),
+        catchError(this.handleError<IUser>('added developer')));
+  }
+
+  /**
+   * deleteDev
+   */
+  public deleteDev(id: number): Observable<IUser> {
+    return this._http.delete<IUser>(`${this.DEVELOPER_URL}/${id}`, this.httpOptions)
+      .pipe(
+        retry(2),
+        tap((_) => this.log(`deleted developer w/ id=${id}`)),
+        catchError(this.handleError<IUser>('deleted developer')));
+  }
+
+  private handleError<T>(operation: string = '', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error)
+      return of(<T>result);
+    }
+  }
+
+  private log(message: string) {
+    console.log(`UserService: ${message}`);
   }
 }
-
-const USERLIST = [
-  {
-    id: 1,
-    experience: 'junior',
-    name: "Leanne Graham",
-    username: "Bret",
-    email: "Sincere@april.biz",
-    reputation: 4,
-    address: {
-      street: "Kulas Light",
-      suite: "Apt. 556",
-      city: "Gwenborough",
-      zipcode: "92998-3874",
-      geo: {
-        lat: "-37.3159",
-        lng: "81.1496"
-      }
-    },
-    phone: "1-770-736-8031 x56442",
-    website: "hildegard.org",
-    company: {
-      name: "Romaguera-Crona",
-      pharse: "Multi-layered client-server neural-net",
-      bs: "harness real-time e-markets"
-    }
-  },
-  {
-    id: 2,
-    experience: 'junior',
-    name: "Ervin Howell",
-    username: "Antonette",
-    email: "Shanna@melissa.tv",
-    reputation: 11,
-    address: {
-      street: "Victor Plains",
-      suite: "Suite 879",
-      city: "Wisokyburgh",
-      zipcode: "90566-7771",
-      geo: {
-        lat: "-43.9509",
-        lng: "-34.4618"
-      }
-    },
-    phone: "010-692-6593 x09125",
-    website: "anastasia.net",
-    company: {
-      name: "Deckow-Crist",
-      pharse: "Proactive didactic contingency",
-      bs: "synergize scalable supply-chains"
-    }
-  },
-  {
-    id: 3,
-    experience: 'junior',
-    name: "Clementine Bauch",
-    username: "Samantha",
-    email: "Nathan@yesenia.net",
-    reputation: 3,
-    address: {
-      street: "Douglas Extension",
-      suite: "Suite 847",
-      city: "McKenziehaven",
-      zipcode: "59590-4157",
-      geo: {
-        lat: "-68.6102",
-        lng: "-47.0653"
-      }
-    },
-    phone: "1-463-123-4447",
-    website: "ramiro.info",
-    company: {
-      name: "Romaguera-Jacobson",
-      pharse: "Face to face bifurcated interface",
-      bs: "e-enable strategic applications"
-    }
-  },
-  {
-    id: 4,
-    experience: 'middle',
-    name: "Patricia Lebsack",
-    username: "Karianne",
-    email: "Julianne.OConner@kory.org",
-    reputation: 40,
-    address: {
-      street: "Hoeger Mall",
-      suite: "Apt. 692",
-      city: "South Elvis",
-      zipcode: "53919-4257",
-      geo: {
-        lat: "29.4572",
-        lng: "-164.2990"
-      }
-    },
-    phone: "493-170-9623 x156",
-    website: "kale.biz",
-    company: {
-      name: "Robel-Corkery",
-      pharse: "Multi-tiered zero tolerance productivity",
-      bs: "transition cutting-edge web services"
-    }
-  },
-  {
-    id: 5,
-    experience: 'middle',
-    name: "Chelsey Dietrich",
-    username: "Kamren",
-    email: "Lucio_Hettinger@annie.ca",
-    reputation: 8,
-    address: {
-      street: "Skiles Walks",
-      suite: "Suite 351",
-      city: "Roscoeview",
-      zipcode: "33263",
-      geo: {
-        lat: "-31.8129",
-        lng: "62.5342"
-      }
-    },
-    phone: "(254)954-1289",
-    website: "demarco.info",
-    company: {
-      name: "Keebler LLC",
-      pharse: "User-centric fault-tolerant solution",
-      bs: "revolutionize end-to-end systems"
-    }
-  },
-  {
-    id: 6,
-    experience: 'middle',
-    name: "Mrs. Dennis Schulist",
-    username: "Leopoldo_Corkery",
-    email: "Karley_Dach@jasper.info",
-    reputation: 6,
-    address: {
-      street: "Norberto Crossing",
-      suite: "Apt. 950",
-      city: "South Christy",
-      zipcode: "23505-1337",
-      geo: {
-        lat: "-71.4197",
-        lng: "71.7478"
-      }
-    },
-    phone: "1-477-935-8478 x6430",
-    website: "ola.org",
-    company: {
-      name: "Considine-Lockman",
-      pharse: "Synchronised bottom-line interface",
-      bs: "e-enable innovative applications"
-    }
-  },
-  {
-    id: 7,
-    experience: 'senior',
-    name: "Kurtis Weissnat",
-    username: "Elwyn.Skiles",
-    email: "Telly.Hoeger@billy.biz",
-    reputation: 7,
-    address: {
-      street: "Rex Trail",
-      suite: "Suite 280",
-      city: "Howemouth",
-      zipcode: "58804-1099",
-      geo: {
-        lat: "24.8918",
-        lng: "21.8984"
-      }
-    },
-    phone: "210.067.6132",
-    website: "elvis.io",
-    company: {
-      name: "Johns Group",
-      pharse: "Configurable multimedia task-force",
-      bs: "generate enterprise e-tailers"
-    }
-  },
-  {
-    id: 8,
-    experience: 'senior',
-    name: "Nicholas Runolfsdottir V",
-    username: "Maxime_Nienow",
-    email: "Sherwood@rosamond.me",
-    reputation: 30,
-    address: {
-      street: "Ellsworth Summit",
-      suite: "Suite 729",
-      city: "Aliyaview",
-      zipcode: "45169",
-      geo: {
-        lat: "-14.3990",
-        lng: "-120.7677"
-      }
-    },
-    phone: "586.493.6943 x140",
-    website: "jacynthe.com",
-    company: {
-      name: "Abernathy Group",
-      pharse: "Implemented secondary concept",
-      bs: "e-enable extensible e-tailers"
-    }
-  },
-  {
-    id: 9,
-    experience: 'senior',
-    name: "Glenna Reichert",
-    username: "Delphine",
-    email: "Chaim_McDermott@dana.io",
-    reputation: 2,
-    address: {
-      street: "Dayna Park",
-      suite: "Suite 449",
-      city: "Bartholomebury",
-      zipcode: "76495-3109",
-      geo: {
-        lat: "24.6463",
-        lng: "-168.8889"
-      }
-    },
-    phone: "(775)976-6794 x41206",
-    website: "conrad.com",
-    company: {
-      name: "Yost and Sons",
-      pharse: "Switchable contextually-based project",
-      bs: "aggregate real-time technologies"
-    }
-  },
-  {
-    id: 10,
-    experience: 'senior',
-    name: "Clementina DuBuque",
-    username: "Moriah.Stanton",
-    email: "Rey.Padberg@karina.biz",
-    reputation: 15,
-    address: {
-      street: "Kattie Turnpike",
-      suite: "Suite 198",
-      city: "Lebsackbury",
-      zipcode: "31428-2261",
-      geo: {
-        lat: "-38.2386",
-        lng: "57.2232"
-      }
-    },
-    phone: "024-648-3804",
-    website: "ambrose.net",
-    company: {
-      name: "Hoeger LLC",
-      pharse: "Centralized empowering task-force",
-      bs: "target end-to-end models"
-    }
-  }
-]

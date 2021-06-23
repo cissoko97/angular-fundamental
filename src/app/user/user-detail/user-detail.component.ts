@@ -13,9 +13,8 @@ export class UserDetailComponent implements OnInit {
   constructor(private activateRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activateRoute.data
-      .subscribe((data: Data) => {
-        this.user = data['data'];
-      });
+    this.activateRoute.data.subscribe((data: Data) => {
+      this.user = data['developer'];
+    });
   }
 }
