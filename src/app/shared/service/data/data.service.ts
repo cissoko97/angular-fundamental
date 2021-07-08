@@ -33,7 +33,7 @@ const GEOS = [{
   lat: "-37.3159",
   lng: "81.1496"
 }];
-const USERLIST = [
+export const USERLIST = [
   {
     id: 1,
     experience: 'junior',

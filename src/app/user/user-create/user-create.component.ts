@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Data, Router } from "@angular/router";
-import { restrictedWord } from "../custom-validator/validator";
 import { Level } from "../enum/level.enum";
 import { IUser } from "../models";
 import { UserService } from "../service/user/user.service";
