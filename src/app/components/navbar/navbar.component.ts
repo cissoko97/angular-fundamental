@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit {
   }
 
   onSearch() {
-    // $('#id')?.modal()
   }
 
   ngOnInit(): void {

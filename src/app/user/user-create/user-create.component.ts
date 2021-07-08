@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { restrictedWord } from "../custom-validator/validator";
+import { ActivatedRoute, Data, Router } from "@angular/router";
 import { Level } from "../enum/level.enum";
 import { IUser } from "../models";
 import { UserService } from "../service/user/user.service";
@@ -12,40 +11,58 @@ import { UserService } from "../service/user/user.service";
 })
 export class UserCreateComponent implements OnInit {
   readonly LEVEL = Level;
-
-  isDirty: boolean = true;
+  private inComingDev!: IUser;
+  private isAnUpdate: boolean = false;
   formDeveloper!: FormGroup;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private userService: UserService) {
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe((data: Data) => {
+      this.inComingDev = data['developer'] as IUser;
+      this.isAnUpdate = true;
+    })
+    // ,
     this.formDeveloper = this.fb.group({
-      name: [{ value: null, disabled: false }, [Validators.required]],
-      username: [{ value: null, disabled: false }, [Validators.required]],
-      email: [{ value: null, disabled: false }, [Validators.required, Validators.email]],
-      experience: [{ value: Level.junior, disabled: false }, [Validators.required]],
-      reputation: [{ value: 0, disabled: false }, [Validators.required]],
+      name: [{ value: this.inComingDev?.name, disabled: false }, [Validators.required]],
+      username: [{ value: this.inComingDev?.username, disabled: false }, [Validators.required]],
+      email: [{ value: this.inComingDev?.email, disabled: false }, [Validators.required, Validators.email]],
+      experience: [{ value: this.inComingDev?.experience || Level.junior, disabled: false }, [Validators.required]],
+      reputation: [{ value: this.inComingDev?.reputation || 4, disabled: false }, [Validators.required]],
       company: this.fb.group({
-        name: [{ value: null, disabled: false }, [Validators.required]],
-        pharse: [{ value: null, disabled: false }, [Validators.required]],
-        bs: [{ value: null, disabled: false }, [Validators.required]],
+        name: [{ value: this.inComingDev?.company?.name, disabled: false }, [Validators.required]],
+        pharse: [{ value: this.inComingDev?.company?.pharse, disabled: false }, [Validators.required]],
+        bs: [{ value: this.inComingDev?.company?.bs, disabled: false }, [Validators.required]],
       })
     });
+    console.log('reputation {}', this.inComingDev?.reputation)
+
   }
   // , restrictedWord(['co', 'go', 'bo'])
   cancel(): void {
     this.router.navigate(['/user']);
   }
 
-  public createUser(data: IUser): void {
+  public save(data: IUser): void {
+
+    if (this.isAnUpdate) {
+      data.id = this.inComingDev.id;
+
+      this.userService.updateDeveloper(data)
+        .subscribe((user: IUser) => {
+          console.log(user);
+          this.router.navigate(['/user', data?.id])
+        })
+      return;
+    }
+
     this.userService.addDeveloper(data)
-      .subscribe((id: number) => {
-        console.log(id);
-        this.isDirty = !this.formDeveloper.valid
+      .subscribe((developer: IUser) => {
         this.router.navigate(['/user']);
       });
   }

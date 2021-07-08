@@ -22,6 +22,7 @@
 </div>
 <hr>
 <div class="row">
-  <app-user-thumbail class="col-md-6" [user]="user" *ngFor="let user of userToDisplay">
+  <app-user-thumbail class="col-md-6" (deletedEvent)="delete($event)" [user]="user"
+    *ngFor="let user of userToDisplay">
   </app-user-thumbail>
 </div>

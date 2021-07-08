@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCreateComponent, UserService, RouteActivedGuard, UserListResolver, UserDetailResolver, VotesService } from './user';
 import { AuthService } from './profile/service/authService';
-import { SharedModule } from './shared/shared.module';
 import { Component404Component, NavbarComponent, JQUERY_TOKEN } from './components';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { DataService } from './shared/service/data/data.service';
+import { SharedModule } from './shared';
 
-// declare var $: any;
 
 let jQuery = window['$' as any]
 @NgModule({
@@ -23,9 +23,9 @@ let jQuery = window['$' as any]
   ],
   imports: [
     BrowserModule,
-    SharedModule,
     AppRoutingModule,
-    HttpClientModule
+    SharedModule,
+    HttpClientInMemoryWebApiModule.forRoot(DataService, { dataEncapsulation: false }),
   ],
   providers: [
     UserService,
@@ -42,7 +42,7 @@ let jQuery = window['$' as any]
 export class AppModule { }
 
 export function checkDirtyState(component: UserCreateComponent) {
-  if (component.isDirty) {
+  if (component.formDeveloper.dirty) {
     return window.confirm('You have not saved this user, do you really want to cancel')
   }
   return true;

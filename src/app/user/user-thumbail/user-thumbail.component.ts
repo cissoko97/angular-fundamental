@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Level } from '../enum/level.enum';
 import { IUser } from '../models';
 
@@ -8,11 +8,16 @@ import { IUser } from '../models';
   styleUrls: ['./user-thumbail.component.scss']
 })
 export class UserThumbailComponent implements OnInit {
+
+  @Output() deletedEvent!: EventEmitter<number>;
   readonly LEVEL = Level;
   @Input() user!: IUser;
-  constructor() { }
 
-  ngOnInit(): void {
+  constructor() {
+    this.deletedEvent = new EventEmitter(true)
   }
 
+  ngOnInit(): void {
+
+  }
 }

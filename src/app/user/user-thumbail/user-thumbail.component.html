@@ -1,6 +1,6 @@
-<div [routerLink]="['/user' , user?.id]" class="user_card">
+<div class="user_card">
   <div class="user_info">
-    <img class="user_avatar" src="/assets/images/user.png" alt="user image">
+    <img class="user_avatar" src="/assets/images/user.png" appLazyImg alt="user image">
     <div class="user_name">
       <div>
         {{user?.id?.toString()| titlecase}} <br>
@@ -10,11 +10,17 @@
         {{user?.phone | titlecase}} <br>
 
         <i [ngClass]="{'bi bi-exclamation-diamond': true ,
-        'junior':user.experience === LEVEL.junior ,
-        'senior':user.experience === LEVEL.senior ,
-        'middle':user.experience === LEVEL.middle}"></i>
+        'junior':user?.experience === LEVEL.junior ,
+        'senior':user?.experience === LEVEL.senior ,
+        'middle':user?.experience === LEVEL.middle}"></i>
       </div>
     </div>
     <!-- <pre>{{user?.company |json}}</pre> -->
   </div>
+</div>
+
+<div class="btn btn-group">
+  <button [routerLink]="['/user' , user?.id]" class="btn btn-success"> <i class="bi bi-eye"></i></button>
+  <button [routerLink]="['/user/new' , user?.id]" class="btn btn-info"> <i class="bi bi-pencil-fill"></i></button>
+  <button (click)="deletedEvent.emit(user?.id)" class="btn btn-danger"> <i class="bi bi-x-circle-fill"></i></button>
 </div>
