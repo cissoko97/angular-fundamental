@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, retry, tap } from 'rxjs/operators';
-import { IUser } from '../../models';
+import { catchError, retry, take, tap } from 'rxjs/operators';
+import { IUser, IGeo } from '../../models';
 
 @Injectable()
 export class UserService {
   private httpOptions!: {};
   readonly DEVELOPER_URL = 'api/developers';
+  readonly GEOS_URL = 'api/geos';
 
   constructor(private _http: HttpClient) {
     this.httpOptions = { headers: new HttpHeaders({ 'Content-type': 'application/json' }) }
@@ -25,6 +26,16 @@ export class UserService {
         catchError(this.handleError<IUser[]>('getDeveloper', [])));
   }
 
+  /**
+   * getGeoPosition
+   */
+  public getGeoPosition(): Observable<IGeo[]> {
+    return this._http.get<IGeo[]>(`${this.GEOS_URL}`, this.httpOptions)
+      .pipe(
+        retry(2),
+        tap((data: Array<IGeo>) => this.log(`fetch data dev with size ${data.length}`)),
+        catchError(this.handleError<IGeo[]>('getDeveloper', [])));
+  }
   /**
    * getUserById
    * @param id
@@ -45,7 +56,7 @@ export class UserService {
    */
   searchUserByTerm(searchTerm: string) {
 
-    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}?email=^s`, this.httpOptions).pipe(
+    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}?email=^\*${searchTerm}\*`, this.httpOptions).pipe(
       tap(_ => this.log(`fetch developer when email content ${searchTerm}`)),
       catchError(this.handleError<IUser[]>('fetch developer with wither', [])
       )

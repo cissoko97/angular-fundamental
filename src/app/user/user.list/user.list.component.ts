@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
 import { Level } from '../enum/level.enum';
-import { IUser } from '../models';
+import { IGeo, IUser } from '../models';
 import { UserService } from '../service/user/user.service';
 @Component({
   selector: 'app-pokemon-list',
@@ -13,6 +11,7 @@ export class UserListComponent implements OnInit {
 
   readonly LEVEL = Level;
   userList: IUser[] = [];
+  geoList: IGeo[] = [];
   userToDisplay: IUser[] = [];
   filterBy: string = 'all';
   sortBy: string = 'name';
@@ -25,7 +24,9 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.sortBy = 'name';
     this.activateRoute.data.subscribe((data: Data) => {
+      console.log(data);
       this.userList = data['developers'];
+      this.geoList = data['geos'];
       this.userToDisplay = this.userList;
       this.orderDeveloper();
     });
@@ -57,7 +58,7 @@ export class UserListComponent implements OnInit {
     console.log(id);
 
     await this.userService.deleteDev(id).toPromise();
-    this.userList = await this.userService.getUSer().toPromise()
+    this.userList = await this.userService.getUSer().toPromise();
     this.userToDisplay = this.userList;
     this.orderDeveloper();
   }

@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Component404Component } from './components';
 import { RouteActivedGuard, UserCreateComponent, UserDetailComponent, UserListComponent, UserListResolver } from './user';
+import { ProductResolver } from './user/resolver/product/product.resolver';
 import { UserDetailResolver } from './user/resolver/user-detail/user-detail.resolver';
 
 export const routes: Routes = [
   {
     path: 'user', component: UserListComponent, resolve: {
-      developers: UserListResolver
+      developers: UserListResolver,
+      geos: ProductResolver
     }
   },
   {

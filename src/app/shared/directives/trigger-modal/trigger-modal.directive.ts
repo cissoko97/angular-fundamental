@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Inject, Input, OnInit } from '@angular/core';
-import { timeout } from 'rxjs/operators';
 import { JQUERY_TOKEN } from 'src/app/components';
 
 @Directive({
@@ -15,7 +14,7 @@ export class TriggerModalDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.el.addEventListener('click', (e) => {
+    this.el.addEventListener('click', (e: Event) => {
       setTimeout(() => {
         this.$(`#${this.modalId}`).modal('show');
       }, 200);

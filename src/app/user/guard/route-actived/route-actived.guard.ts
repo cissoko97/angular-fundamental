@@ -15,6 +15,8 @@ export class RouteActivedGuard implements CanActivate {
     if (res) {
       return true;
     }
+
     return await this.router.navigate(['/404']);
+
   }
 }
