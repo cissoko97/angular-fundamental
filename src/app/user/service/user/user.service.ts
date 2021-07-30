@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, retry, take, tap } from 'rxjs/operators';
+import { catchError, map, retry, take, tap } from 'rxjs/operators';
 import { IUser, IGeo } from '../../models';
 
 @Injectable()
@@ -56,7 +56,8 @@ export class UserService {
    */
   searchUserByTerm(searchTerm: string) {
 
-    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}?email=^\*${searchTerm}\*`, this.httpOptions).pipe(
+    return this._http.get<IUser[]>(`${this.DEVELOPER_URL}`, this.httpOptions).pipe(
+      map((users: IUser[]) => users.filter((user: IUser) => user.email.includes(searchTerm?.trim()))),
       tap(_ => this.log(`fetch developer when email content ${searchTerm}`)),
       catchError(this.handleError<IUser[]>('fetch developer with wither', [])
       )
