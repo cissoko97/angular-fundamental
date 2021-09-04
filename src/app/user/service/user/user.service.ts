@@ -23,6 +23,7 @@ export class UserService {
       .pipe(
         retry(2),
         tap((data: Array<IUser>) => this.log(`fetch data dev with size ${data.length}`)),
+        map((users: IUser[]) => users.map((user: IUser) => ({ ...user, reputation: user.reputation * 1.5 } as IUser))),
         catchError(this.handleError<IUser[]>('getDeveloper', [])));
   }
 
@@ -33,7 +34,7 @@ export class UserService {
     return this._http.get<IGeo[]>(`${this.GEOS_URL}`, this.httpOptions)
       .pipe(
         retry(2),
-        tap((data: Array<IGeo>) => this.log(`fetch data dev with size ${data.length}`)),
+        tap((data: Array<IGeo>) => this.log(`fetch data Geos with size ${data.length}`)),
         catchError(this.handleError<IGeo[]>('getDeveloper', [])));
   }
   /**
@@ -58,7 +59,7 @@ export class UserService {
 
     return this._http.get<IUser[]>(`${this.DEVELOPER_URL}`, this.httpOptions).pipe(
       map((users: IUser[]) => users.filter((user: IUser) => user.email.includes(searchTerm?.trim()))),
-      tap(_ => this.log(`fetch developer when email content ${searchTerm}`)),
+      tap((data: IUser[]) => this.log(`fetch developer when email content ${searchTerm}`)),
       catchError(this.handleError<IUser[]>('fetch developer with wither', [])
       )
     )

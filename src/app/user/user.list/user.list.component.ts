@@ -24,7 +24,6 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.sortBy = 'name';
     this.activateRoute.data.subscribe((data: Data) => {
-      console.log(data);
       this.userList = data['developers'];
       this.geoList = data['geos'];
       this.userToDisplay = this.userList;
