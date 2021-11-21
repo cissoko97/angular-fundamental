@@ -6,7 +6,7 @@ import { Level } from '../../../user/enum/level.enum';
 })
 export class ReadEnumPipe implements PipeTransform {
 
-  transform(value: Object, ...args: unknown[]): Array<any> {
+  transform(value: any, ...args: unknown[]): Array<any> {
     const values = Object.values(value);
     return values.splice(0);
   }

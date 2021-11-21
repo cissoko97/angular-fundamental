@@ -9,6 +9,7 @@ import { ValidatorFn, Validator, AbstractControl, ValidationErrors, NG_VALIDATOR
 export class ValidatorDirective implements Validator {
 
 
+  // tslint:disable-next-line: no-input-rename
   @Input('appValidator') appValidator: string[] = [];
 
   constructor() { }

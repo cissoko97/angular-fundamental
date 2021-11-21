@@ -41,6 +41,7 @@ const jQuery = window['$' as any];
 })
 export class AppModule { }
 
+
 export function checkDirtyState(component: UserCreateComponent): boolean {
   if (component.formDeveloper.dirty) {
     return window.confirm('You have not saved this user, do you really want to cancel');
