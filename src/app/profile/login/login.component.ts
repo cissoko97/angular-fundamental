@@ -10,12 +10,11 @@ import { AuthService } from '../service/authService';
 })
 export class LoginComponent implements OnInit {
 
-  mouseOverLogin: boolean = false;
-  username: string = '';
-  password: string = '';
+  mouseOverLogin = false;
+  username = '';
+  password = '';
 
-  constructor(private authService: AuthService,
-    private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,14 +22,14 @@ export class LoginComponent implements OnInit {
   submitForm(formValue: any): void {
     const form: NgForm = new NgForm([], []);
     this.authService.loginUser(formValue);
-    this.router.navigate(['user'])
+    this.router.navigate(['user']);
   }
 
-  cancel() {
-    this.router.navigate(['user'])
+  cancel(): void {
+    this.router.navigate(['user']);
   }
 
-  mouseEvent(event: Event, status: boolean) {
+  mouseEvent(event: Event, status: boolean): void {
     event.preventDefault();
     this.mouseOverLogin = status;
   }

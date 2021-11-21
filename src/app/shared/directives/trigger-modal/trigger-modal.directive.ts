@@ -13,11 +13,11 @@ export class TriggerModalDirective implements OnInit {
     this.el = ref.nativeElement;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.el.addEventListener('click', (e: Event) => {
       setTimeout(() => {
         this.$(`#${this.modalId}`).modal('show');
       }, 200);
-    })
+    });
   }
 }

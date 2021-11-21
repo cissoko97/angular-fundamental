@@ -14,11 +14,11 @@ import { UserService } from '../../service/user/user.service';
 })
 export class ProductResolver implements Resolve<IGeo[]> {
 
-  constructor(private _userService: UserService) {
+  constructor(private userService: UserService) {
 
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IGeo[]> {
-    return this._userService.getGeoPosition().pipe(tap(() => { }), map(data => data));
+    return this.userService.getGeoPosition().pipe(tap(() => { }), map(data => data));
   }
 }

@@ -8,7 +8,7 @@ export class ReadEnumPipe implements PipeTransform {
 
   transform(value: Object, ...args: unknown[]): Array<any> {
     const values = Object.values(value);
-    return values.splice(0)
+    return values.splice(0);
   }
 
 }

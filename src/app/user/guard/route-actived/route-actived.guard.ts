@@ -8,9 +8,9 @@ export class RouteActivedGuard implements CanActivate {
   constructor(private userService: UserService, private router: Router) {
   }
 
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
-    const res = await this.userService.getUserById(+route.params['id']).toPromise()
+    const res = await this.userService.getUserById(+route.params.id).toPromise();
 
     if (res) {
       return true;

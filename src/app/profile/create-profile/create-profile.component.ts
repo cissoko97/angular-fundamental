@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { IUser } from "../models/user";
-import { AuthService } from "../service/authService";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IUser } from '../models/user';
+import { AuthService } from '../service/authService';
 
 @Component({
   selector: 'app-profile-create',
@@ -11,10 +11,9 @@ import { AuthService } from "../service/authService";
 export class ProfileCreateComponent implements OnInit {
 
   profileForm!: FormGroup;
-  loginMouseOver: boolean = false;
+  loginMouseOver = false;
 
-  constructor(private fb: FormBuilder,
-    private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 
   }
 
@@ -27,16 +26,16 @@ export class ProfileCreateComponent implements OnInit {
     });
   }
 
-  updateProfil(data: IUser) {
+  updateProfil(data: IUser): void {
     console.log(data);
   }
 
-  mouseEvent(event: Event, status: boolean) {
+  mouseEvent(event: Event, status: boolean): void {
     this.loginMouseOver = status;
   }
 
-  cancel() {
-    this.router.navigate(['/user'])
+  cancel(): void {
+    this.router.navigate(['/user']);
   }
 
 

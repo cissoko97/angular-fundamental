@@ -7,11 +7,11 @@ import { UserService } from '../../service/user/user.service';
 @Injectable()
 export class UserDetailResolver implements Resolve<boolean> {
 
-  constructor(private _userService: UserService) {
+  constructor(private userService: UserService) {
 
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this._userService.getUserById(+route.params['id']).pipe(map(res => res));
+    return this.userService.getUserById(+route.params.id).pipe(map(res => res));
   }
 }

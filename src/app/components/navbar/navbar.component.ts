@@ -10,19 +10,18 @@ import { IUser } from 'src/app/user/models';
 })
 export class NavbarComponent implements OnInit {
   foundUser!: IUser[];
-  searchTerm: string = '';
-  constructor(public auth: AuthService,
-    private userService: UserService ,  ) {
+  searchTerm = '';
+  constructor(public auth: AuthService, private userService: UserService) {
   }
 
-  onSearch() {
+  onSearch(): void {
   }
 
   ngOnInit(): void {
-    this.auth.isAuthenticated()
+    this.auth.isAuthenticated();
   }
 
-  makeSearch(searchTerm: string) {
+  makeSearch(searchTerm: string): void {
     this.userService.searchUserByTerm(searchTerm)
       .subscribe(data => {
         this.foundUser = data;

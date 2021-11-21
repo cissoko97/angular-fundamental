@@ -10,12 +10,12 @@ import { UserService } from '../../service/user/user.service';
 
 @Injectable()
 export class UserListResolver implements Resolve<boolean> {
-  constructor(private _userService: UserService) {
+  constructor(private userService: UserService) {
 
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this._userService.getUSer()
+    return this.userService.getUSer()
       .pipe(map(data => data));
   }
 
