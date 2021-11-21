@@ -1,8 +1,8 @@
-import { Component, ElementRef, Inject, Input, ViewChild } from "@angular/core";
-import { JQUERY_TOKEN } from "../components";
+import { Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
+import { JQUERY_TOKEN } from '../components';
 
 @Component({
-  selector: 'simple-modal',
+  selector: 'app-simple-modal',
   template: `<div [id]="elementId" #ModalContainer class="modal fade" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -23,21 +23,22 @@ import { JQUERY_TOKEN } from "../components";
     </div>
   </div>`,
   styles: [`
-  .modal-body{ height:250px , overflow-y:scroll}`]
+  .modal-body{ height:250px ;overflow-y:scroll}`]
 })
 export class SimpleModal {
 
-  @Input() title: string = '';
-  @Input() elementId: string = '';
-  @Input() closeOnBodyClick: boolean = true;
+  @Input() title = '';
+  @Input() elementId = '';
+  @Input() closeOnBodyClick = true;
   @ViewChild('ModalContainer') container!: ElementRef;
 
   constructor(@Inject(JQUERY_TOKEN) private $: any) {
 
   }
 
-  closeModal() {
-    if (this.closeOnBodyClick)
+  closeModal(): void {
+    if (this.closeOnBodyClick) {
       this.$(this.container.nativeElement).modal('hide');
+    }
   }
 }

@@ -19,6 +19,6 @@ describe('ReadEnumPipe', () => {
       senior = 'senior'
     }
 
-    expect(pipe.transform(Level).join('-')).toBe("junior-middle-senior");
-  })
+    expect(pipe.transform(Level).join('-')).toBe('junior-middle-senior');
+  });
 });

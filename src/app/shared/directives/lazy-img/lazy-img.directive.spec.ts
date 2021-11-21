@@ -5,7 +5,7 @@ import { LazyImgDirective } from './lazy-img.directive';
 
 
 describe('LazyImgDirective', () => {
-  let directive: LazyImgDirective
+  let directive: LazyImgDirective;
   let nativeElement: ElementRef<HTMLImageElement>;
   beforeEach(() => {
     // let nativeElement: jasmine.SpyObj<ElementRef<HTMLImageElement>> = (new HTMLImageElement()).;
@@ -13,7 +13,7 @@ describe('LazyImgDirective', () => {
     directive = new LazyImgDirective(nativeElement);
 
 
-  })
+  });
   it('should create an instance', () => {
     expect(directive).toBeTruthy();
   });

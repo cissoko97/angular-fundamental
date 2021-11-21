@@ -34,10 +34,10 @@
   </div>
 </nav>
 
-<simple-modal [closeOnBodyClick]="true" [elementId]="'resultSearch'" [title]="'macthing user website'">
+<app-simple-modal [closeOnBodyClick]="true" [elementId]="'resultSearch'" [title]="'macthing user website'">
   <div class="list-group">
     <a [routerLink]="['/user' , user.id]" class="list-group-item" *ngFor="let user of foundUser">
       {{user?.name}}
     </a>
   </div>
-</simple-modal>
+</app-simple-modal>
