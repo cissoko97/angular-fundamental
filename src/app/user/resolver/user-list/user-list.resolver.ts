@@ -6,15 +6,16 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IUser } from '../..';
 import { UserService } from '../../service/user/user.service';
 
 @Injectable()
-export class UserListResolver implements Resolve<boolean> {
+export class UserListResolver implements Resolve<IUser[]> {
   constructor(private userService: UserService) {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IUser[]> {
     return this.userService.getUSer()
       .pipe(map(data => data));
   }

@@ -15,14 +15,14 @@
         <button (click)="setfilterBy('all')" [ngClass]="{'btn btn-sm btn-secondary':true, 'active' : filterBy ==='all'}"
           class="">all</button>
         <button [ngClass]="{'btn btn-sm btn-secondary':true , 'active' : filterBy === item}" (click)="setfilterBy(item)"
-          *ngFor="let item of LEVEL | readEnum " class="btn btn-sm btn-secondary">{{item}}</button>
+          *ngFor="let item of LEVEL | readEnum">{{item}}</button>
       </button>
     </div>
   </div>
 </div>
 <hr>
 <div class="row">
-  <app-user-thumbail class="col-md-6" (deletedEvent)="delete($event)" [user]="user"
+  <app-user-thumbail [ngClass]="{'col-md-6':true}" (deletedEvent)="delete($event)" [user]="user"
     *ngFor="let user of userToDisplay">
   </app-user-thumbail>
 </div>

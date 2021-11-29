@@ -14,7 +14,7 @@ export class UserThumbailComponent implements OnInit {
   @Input() user!: IUser;
 
   constructor() {
-    this.deletedEvent = new EventEmitter(true)
+    this.deletedEvent = new EventEmitter(true);
   }
 
   ngOnInit(): void {
