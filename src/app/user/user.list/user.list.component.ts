@@ -2,14 +2,14 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Level } from '../enum/level.enum';
-import { IGeo, IUser } from '../models';
+import { Ball, IGeo, IUser } from '../models';
 import { UserService } from '../service/user/user.service';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './user.list.component.html',
 })
 export class UserListComponent implements OnInit, OnDestroy, OnChanges {
-
+  ball: Ball = new Ball();
   readonly LEVEL = Level;
   userList: IUser[] = [];
   geoList: IGeo[] = [];
@@ -21,6 +21,7 @@ export class UserListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.ball.id = 10;
   }
 
   ngOnDestroy(): void {

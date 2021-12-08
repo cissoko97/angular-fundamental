@@ -8,6 +8,7 @@ import { Component404Component, NavbarComponent, JQUERY_TOKEN } from './componen
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { DataService } from './shared/service/data/data.service';
 import { SharedModule } from './shared';
+import { GuceTableModule } from 'fisrt-lib/projects/guce-table/src/public-api';
 
 
 const jQuery = window['$' as any];
@@ -22,6 +23,7 @@ const jQuery = window['$' as any];
     Component404Component
   ],
   imports: [
+    GuceTableModule,
     BrowserModule,
     AppRoutingModule,
     SharedModule,
