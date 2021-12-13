@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ProfileRoutingModule, ProfileCreateComponent, LoginComponent } from './index';
 import { SharedModule } from '../shared/shared.module';
 @NgModule({
@@ -8,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
     LoginComponent
   ],
   imports: [
-    CommonModule,
     ProfileRoutingModule,
     SharedModule
   ],

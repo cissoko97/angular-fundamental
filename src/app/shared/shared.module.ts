@@ -24,6 +24,7 @@ import { LazyImgDirective } from './directives/lazy-img/lazy-img.directive';
     ReactiveFormsModule,
   ],
   exports: [
+    CommonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

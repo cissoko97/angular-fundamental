@@ -36,11 +36,10 @@
         <button type="reset" (click)="cancel()" class="btn btn-outline-danger">Cancel</button>
       </div>
     </form>
-
   </div>
+<pre>{{loginForm.value| json}}</pre>
 
-
-  <ng-container></ng-container>
+  <!-- <ng-container></ng-container> -->
   <!-- <div class="col-md-5">
     <pre>
       loginForm.controls.username.valid : {{loginForm.controls?.username?.valid }}

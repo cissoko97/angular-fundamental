@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -7,6 +8,73 @@ import { UserService } from '../service/user/user.service';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './user.list.component.html',
+  animations: [
+    trigger('userThumbail', [
+      transition('void => *', [
+        // initiale state
+        style({
+          height: 0,
+          opacity: 0,
+          transform: 'scale(0.85)',
+          'margin-bottom': 0,
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingRight: 0,
+          paddingLeft: 0,
+        }),
+        animate('50ms', style({
+          opacity: 0,
+          height: 0,
+          'margin-bottom': 0,
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+        })),
+        animate(100)
+      ]),
+      transition('* => void',
+        [
+          animate(50, style({
+            transform: 'scale(1.05)'
+          })),
+          // then scale down back to normal size while beginnind to fade
+          animate(50, style({
+            transform: 'scale(1)',
+            opacity: 0.7
+          })),
+          // Scale down and fade out completely
+          animate('150ms ease-out', style({
+            opacity: 0,
+            transform: 'scale(0.68)'
+          })),
+          // then animate the spacing (which includes heigth , margin and padding)
+          animate('200ms ease-out', style({
+            height: 0,
+            'margin-bottom': 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+          }))
+        ])
+    ]),
+    trigger('listAnim', [
+      transition('* => *', [
+        query(':enter', [
+          style({
+            opacity: 0,
+            height: 0
+          }),
+          stagger(100, [
+            animate('0.2s ease')
+          ])
+        ], {
+          optional: true
+        })
+      ])
+    ])
+  ]
 })
 export class UserListComponent implements OnInit, OnDestroy, OnChanges {
   ball: Ball = new Ball();
@@ -70,8 +138,8 @@ export class UserListComponent implements OnInit, OnDestroy, OnChanges {
     console.log(id);
 
     await this.userService.deleteDev(id).toPromise();
-    this.userList = await this.userService.getUSer().toPromise() as IUser[];
-    this.userToDisplay = this.userList;
+    const index = this.userList.findIndex((value:IUser)  => value.id === id);
+    this.userList.splice(index , 1);
     this.orderDeveloper();
   }
 }

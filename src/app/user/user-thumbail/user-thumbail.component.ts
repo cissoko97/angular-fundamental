@@ -1,3 +1,4 @@
+import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Level } from '../enum/level.enum';
 import { IUser } from '../models';
@@ -5,7 +6,7 @@ import { IUser } from '../models';
 @Component({
   selector: 'app-user-thumbail',
   templateUrl: './user-thumbail.component.html',
-  styleUrls: ['./user-thumbail.component.scss']
+  styleUrls: ['./user-thumbail.component.scss'],
 })
 export class UserThumbailComponent implements OnInit {
 
