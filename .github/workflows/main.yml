@@ -38,3 +38,13 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: actions/checkout@v2
+       - name: Use Node.js 14.x
+         uses: actions/setup-node@v1
+         with:
+           node-version: 14.x
+      - name: Setup
+         run: npm ci
+      - name: Build
+         run: |
+           npm build --prod
