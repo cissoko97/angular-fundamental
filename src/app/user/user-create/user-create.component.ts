@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Data, Router } from "@angular/router";
+import { finalize } from "rxjs";
 import { Level } from "../enum/level.enum";
 import { IUser } from "../models";
 import { UserService } from "../service/user/user.service";
@@ -23,9 +24,11 @@ export class UserCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe((data: Data) => {
+    this.route.data.pipe(finalize(() => {
+      console.log('reputation {}', this.inComingDev?.reputation);
+    })).subscribe((data: Data) => {
       this.inComingDev = data['developer'] as IUser;
-      this.isAnUpdate = true;
+      this.isAnUpdate = this.inComingDev?.id ? true : false;
     })
     // ,
     this.formDeveloper = this.fb.group({
@@ -40,8 +43,6 @@ export class UserCreateComponent implements OnInit {
         bs: [{ value: this.inComingDev?.company?.bs, disabled: false }, [Validators.required]],
       })
     });
-    console.log('reputation {}', this.inComingDev?.reputation)
-
   }
   // , restrictedWord(['co', 'go', 'bo'])
   cancel(): void {
@@ -51,7 +52,7 @@ export class UserCreateComponent implements OnInit {
   public save(data: IUser): void {
 
     if (this.isAnUpdate) {
-      data.id = this.inComingDev.id;
+      data.id = this.inComingDev?.id;
 
       this.userService.updateDeveloper(data)
         .subscribe((user: IUser) => {
@@ -65,6 +66,10 @@ export class UserCreateComponent implements OnInit {
       .subscribe((developer: IUser) => {
         this.router.navigate(['/user']);
       });
+  }
+
+  public get anUpdate(): boolean {
+    return this.isAnUpdate;
   }
 
 }

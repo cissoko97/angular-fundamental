@@ -213,7 +213,7 @@ export const USERLIST = [
   {
     id: 8,
     experience: 'senior',
-    name: 'Nicholas Runolfsdottir V',
+    name: 'Runolfsdottir V',
     username: 'Maxime_Nienow',
     email: 'Sherwood@rosamond.me',
     reputation: 30,

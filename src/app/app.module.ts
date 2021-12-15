@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCreateComponent, UserService, RouteActivedGuard, UserListResolver, UserDetailResolver, VotesService } from './user';
+import { UserListComponent, UserThumbailComponent, UserDetailComponent, UserCreateComponent, UserService, RouteActivedGuard, UserListResolver, UserDetailResolver } from './user';
 import { AuthService } from './profile/service/authService';
 import { Component404Component, NavbarComponent, JQUERY_TOKEN } from './components';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -31,7 +31,6 @@ const jQuery = window['$' as any];
   ],
   providers: [
     UserService,
-    VotesService,
     RouteActivedGuard,
     { provide: 'canDeactivateCreateUser', useValue: checkDirtyState },
     { provide: JQUERY_TOKEN, useValue: jQuery },
@@ -45,7 +44,7 @@ export class AppModule { }
 
 
 export function checkDirtyState(component: UserCreateComponent): boolean {
-  if (component.formDeveloper.dirty) {
+  if (component.formDeveloper.dirty && component.anUpdate) {
     return window.confirm('You have not saved this user, do you really want to cancel');
   }
   return true;
