@@ -1,5 +1,5 @@
 import { Directive, Input } from '@angular/core';
-import { ValidatorFn, Validator, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
   selector: '[appValidator]',
@@ -29,5 +29,7 @@ export class ValidatorDirective implements Validator {
     }
 
   }
+
+
 
 }
